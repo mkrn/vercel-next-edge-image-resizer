@@ -1,9 +1,10 @@
-import { NextResponse } from "next/server";
+import { NextApiResponse, NextApiRequest } from "next";
 import sharp from "sharp";
 
-// export const runtime = "edge";
-
-export default async function handler(req) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const { searchParams } = new URL(req.url);
   const src = searchParams.get("src");
   const width = parseInt(searchParams.get("width"));
@@ -15,10 +16,6 @@ export default async function handler(req) {
     .jpeg({ quality })
     .toBuffer();
 
-  return new NextResponse(resizedImageBuffer, {
-    status: 200,
-    headers: {
-      "Content-Type": "image/jpeg",
-    },
-  });
+  res.status(200).setHeader("Content-Type", "image/jpeg");
+  res.end(resizedImageBuffer);
 }
