@@ -1,4 +1,4 @@
-import { ImageResponse } from "next/server";
+import { NextResponse } from "next/server";
 import sharp from "sharp";
 
 export const runtime = "edge";
@@ -15,8 +15,7 @@ export default async function handler(req) {
     .jpeg({ quality })
     .toBuffer();
 
-  return new ImageResponse(resizedImageBuffer, {
-    ttl: 60 * 60 * 24, // 24 hours
+  return new NextResponse(resizedImageBuffer, {
     status: 200,
     headers: {
       "Content-Type": "image/jpeg",
